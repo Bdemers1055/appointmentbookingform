@@ -3,10 +3,8 @@ import { Form, DatePicker, TimePicker, Button } from 'antd';
 import '../App.css';
 
 const FormItem = Form.Item;
-const MonthPicker = DatePicker.MonthPicker;
-const RangePicker = DatePicker.RangePicker;
 
-class TimeRelatedForm extends React.Component {
+class TimeRelatedForm extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -16,18 +14,9 @@ class TimeRelatedForm extends React.Component {
       }
 
       // Should format date value before submit.
-      const rangeValue = fieldsValue['range-picker'];
-      const rangeTimeValue = fieldsValue['range-time-picker'];
       const values = {
         ...fieldsValue,
         'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
-        'date-time-picker': fieldsValue['date-time-picker'].format('YYYY-MM-DD HH:mm:ss'),
-        'month-picker': fieldsValue['month-picker'].format('YYYY-MM'),
-        'range-picker': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
-        'range-time-picker': [
-          rangeTimeValue[0].format('YYYY-MM-DD HH:mm:ss'),
-          rangeTimeValue[1].format('YYYY-MM-DD HH:mm:ss'),
-        ],
         'time-picker': fieldsValue['time-picker'].format('HH:mm:ss'),
       };
       console.log('Received values of form: ', values);
@@ -48,9 +37,6 @@ class TimeRelatedForm extends React.Component {
     };
     const config = {
       rules: [{ type: 'object', required: true, message: 'Please select time!' }],
-    };
-    const rangeConfig = {
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
     };
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -84,7 +70,5 @@ class TimeRelatedForm extends React.Component {
 }
 
 const WrappedTimeRelatedForm = Form.create()(TimeRelatedForm);
-
-// ReactDOM.render(<WrappedTimeRelatedForm />, mountNode);
 
 export default WrappedTimeRelatedForm;
