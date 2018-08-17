@@ -5,6 +5,12 @@ import '../App.css';
 const FormItem = Form.Item;
 
 class TimeRelatedForm extends Component {
+    constructor() {
+        super();
+        this.state = {
+          formLayout: 'vertical',
+        };
+    }
   handleSubmit = (e) => {
     e.preventDefault();
 
