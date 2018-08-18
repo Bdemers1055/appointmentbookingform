@@ -4,15 +4,26 @@
   "private": true,
   "dependencies": {
     "antd": "^3.8.1",
+    "axios": "^0.18.0",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
     "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4"
   },
+  "proxy": "http://localhost:3100",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server.js",
+    "client:start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server:start": "nodemon server.js",
+    "heroku-postbuild": "npm run build"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
   }
 }
