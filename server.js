@@ -12,8 +12,10 @@ server.use(cors());
 server.use(express.static('build'));
 
 
-server.get('/api/v1/appointments', (request, response) => {
-    const url = `https://acuityscheduling.com/api/v1/appointments`;
+server.get('/api/v1/availability/:dates:appointment', (request, response) => {
+    const { dates } = 'dates?month=2018-08';
+    const { appointment } = '&appointmentTypeID=7856489';
+    const url = `https://acuityscheduling.com/api/v1/availability/${dates}${appointment}`;
     axios({
         method: 'get',
         url: url,
