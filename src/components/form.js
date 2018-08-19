@@ -31,7 +31,8 @@ class TimeRelatedForm extends Component {
     }  
     disabledDate(current){
       // Can not select days before today and today
-      return current && current < moment().endOf('day') && (dates.response.data);
+      // return current && current < moment().endOf('day');
+      return current === moment('2016-02-04');
     }
 
   handleSubmit = (e) => {
