@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import moment from 'moment';
 import { Form, DatePicker, TimePicker, Button } from 'antd';
 import '../App.css';
 
@@ -11,6 +13,27 @@ class TimeRelatedForm extends Component {
           formLayout: 'vertical',
         };
     }
+    fetchAvailableDates(){
+      const dates = 'dates?month=2018-08';
+      const appointments = '&appointmentTypeID=7856489';
+      const url = `https://acuityscheduling.com/api/v1/availability/${dates},${appointments}`;
+      axios.get(url).then((response) => {
+          this.setState({
+              dates: response.data,
+              success: true,
+          });
+      }).catch((error) => {
+          this.setState({
+              success: false,
+              error,
+          });
+    });
+    }  
+    disabledDate(current){
+      // Can not select days before today and today
+      return current && current < moment().endOf('day') && (dates.response.data);
+    }
+
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -51,7 +74,10 @@ class TimeRelatedForm extends Component {
           label="DatePicker"
         >
           {getFieldDecorator('date-picker', config)(
-            <DatePicker />
+            <DatePicker 
+            disabledDate={this.disabledDate}
+            onClick={this.fetchAvailableDates}
+            />
           )}
         </FormItem>
         <FormItem
