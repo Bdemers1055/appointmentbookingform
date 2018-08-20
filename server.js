@@ -11,7 +11,7 @@ const port = process.env.PORT || 3100;
 server.use(cors());
 server.use(express.static('build'));
 
-server.get('/api/v1/availability/:dates:appointments', (request, response) => {
+server.get('/api/v1/availability/:dates,:appointments', (request, response) => {
     const dates = 'dates?month=2018-08';
     const appointments = '&appointmentTypeID=7856489';
     const url = `https://acuityscheduling.com/api/v1/availability/${dates},${appointments}`;

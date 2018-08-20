@@ -13,10 +13,13 @@ class TimeRelatedForm extends Component {
           formLayout: 'vertical',
         };
     }
+    componentDidMount(){
+      this.fetchAvailableDates();
+    }
     fetchAvailableDates(){
-      const dates = 'dates?month=2018-08';
-      const appointments = '&appointmentTypeID=7856489';
-      const url = `https://acuityscheduling.com/api/v1/availability/${dates},${appointments}`;
+      const dates = '2018-08,2018-09';
+      const appointments = '7856489';
+      const url = `/api/v1/availability/${dates},${appointments}`;
       axios.get(url).then((response) => {
           this.setState({
               dates: response.data,
@@ -29,10 +32,9 @@ class TimeRelatedForm extends Component {
           });
     });
     }  
-    disabledDate(current){
-      // Can not select days before today and today
-      // return current && current < moment().endOf('day');
-      return current === moment('2016-02-04');
+    disabledDate = (current) => { // this is to enable the dates
+      console.log(this);
+      return current && !this.state.dates.some(obj => current.isSame(obj.date,'day'));
     }
 
   handleSubmit = (e) => {
