@@ -15,11 +15,11 @@ class TimeRelatedForm extends Component {
     }
     componentDidMount(){
       this.fetchAvailableDates();
+      this.fetchAvailableTimes();
     }
     fetchAvailableDates(){
-      const dates = '2018-08,2018-09';
-      const appointments = '7856489';
-      const url = `/api/v1/availability/${dates},${appointments}`;
+      const month = moment().format('YYYY-MM');
+      const url = `/api/v1/availability/${month}`;
       axios.get(url).then((response) => {
           this.setState({
               dates: response.data,
@@ -31,12 +31,30 @@ class TimeRelatedForm extends Component {
               error,
           });
     });
+  }
+    fetchAvailableTimes(){
+      const month = moment().format('YYYY-MM');
+      const url = `/api/v1/availability/times/${month}`;
+      axios.get(url).then((response) => {
+          this.setState({
+              hour: response.data,
+              success: true,
+          });
+      }).catch((error) => {
+          this.setState({
+              success: false,
+              error,
+          });
+    });
     }  
-    disabledDate = (current) => { // this is to enable the dates
+    disabledDate = (current) => { // this is to enable the avail. dates (do not disable)
       console.log(this);
       return current && !this.state.dates.some(obj => current.isSame(obj.date,'day'));
     }
-
+    disabledHours = (current) => { // this is to enable the avail. dates (do not disable)
+      console.log(this);
+      return current && !this.state.time.some(obj => current.isSame(obj.time,'time'));
+    }
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -79,7 +97,6 @@ class TimeRelatedForm extends Component {
           {getFieldDecorator('date-picker', config)(
             <DatePicker 
             disabledDate={this.disabledDate}
-            onClick={this.fetchAvailableDates}
             />
           )}
         </FormItem>
@@ -88,7 +105,11 @@ class TimeRelatedForm extends Component {
           label="TimePicker"
         >
           {getFieldDecorator('time-picker', config)(
-            <TimePicker />
+            <TimePicker 
+            use12Hours 
+            format="HH:mm:ss a" 
+            disabledHours={this.disabledHours}
+            />
           )}
         </FormItem>
         <FormItem

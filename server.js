@@ -11,10 +11,10 @@ const port = process.env.PORT || 3100;
 server.use(cors());
 server.use(express.static('build'));
 
-server.get('/api/v1/availability/:dates,:appointments', (request, response) => {
-    const dates = 'dates?month=2018-08';
+server.get('/api/v1/availability/:month', (request, response) => {
+    const dates = `dates?month=${request.params.month}`;
     const appointments = '&appointmentTypeID=7856489';
-    const url = `https://acuityscheduling.com/api/v1/availability/${dates},${appointments}`;
+    const url = `https://acuityscheduling.com/api/v1/availability/${dates}${appointments}`;
     axios({
         method: 'get',
         url: url,
@@ -23,9 +23,33 @@ server.get('/api/v1/availability/:dates,:appointments', (request, response) => {
             password: process.env.ACUITY_API_KEY
         }
     })
-    .then((appointments) => {
-        console.log(appointments)
-        response.json(appointments.data);
+    .then((appointmentDate) => {
+        console.log(appointmentDate)
+        response.json(appointmentDate.data);
+    })
+    .catch((err) => {
+        console.log(err)
+        response.status(500).json({
+            msg: 'Something wrong',
+        });
+    });
+});
+
+server.get('/api/v1/availability/times/:date', (request, response) => {
+    const appointmentTimes = 'times?appointmentTypeID=7856489';
+    const date = `&date=${request.params.date}`;
+    const url = `https://acuityscheduling.com/api/v1/availability/${appointmentTimes}${date}`;
+    axios({
+        method: 'get',
+        url: url,
+        auth: {
+            username: process.env.ACUITY_USER_ID,
+            password: process.env.ACUITY_API_KEY
+        }
+    })
+    .then((appointmentTimes) => {
+        console.log(appointmentTimes)
+        response.json(appointmentTimes.data);
     })
     .catch((err) => {
         console.log(err)
