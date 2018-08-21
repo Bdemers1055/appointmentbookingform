@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -10,6 +11,7 @@ const port = process.env.PORT || 3100;
 
 server.use(cors());
 server.use(express.static('build'));
+server.use(bodyParser.json());
 
 server.get('/api/v1/availability/:month', (request, response) => {
     const dates = `dates?month=${request.params.month}`;
@@ -60,8 +62,9 @@ server.get('/api/v1/availability/times/:date', (request, response) => {
 });
 
 server.post('/api/v1/appointments', (request, response, next) => {
+    const { datePicker, timePicker } = request.body;
     const dataToSend = {
-        "datetime": `${datePicker}:${timePicker}`,
+        "datetime": `${datePicker}T${timePicker}`,
         "appointmentTypeID": 7856489,
         "firstName": "Bob",
         "lastName": "McTest",

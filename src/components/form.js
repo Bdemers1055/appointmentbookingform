@@ -64,10 +64,20 @@ class TimeRelatedForm extends Component {
       // Should format date value before submit.
       const values = {
         ...fieldsValue,
-        'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
-        'time-picker': fieldsValue['time-picker'].format('HH:mm:ss'),
+        'datePicker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
+        'timePicker': fieldsValue['time-picker'].format('HH:mm:ss'),
       };
       console.log('Received values of form: ', values);
+      axios.post('/api/v1/appointments', values)
+      .then((success) => {
+        console.log('success')
+    })
+    .catch((err) => {
+        console.log(err)
+        // response.status(500).json({
+        //     msg: 'Something wrong',
+        // });
+    });
     });
   }
 
