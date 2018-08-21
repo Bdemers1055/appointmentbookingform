@@ -61,7 +61,7 @@ server.get('/api/v1/availability/times/:date', (request, response) => {
 
 server.post('/api/v1/appointments', (request, response, next) => {
     const dataToSend = {
-        "datetime": "2018-08-23T14:00:00",
+        "datetime": `${datePicker}:${timePicker}`,
         "appointmentTypeID": 7856489,
         "firstName": "Bob",
         "lastName": "McTest",
