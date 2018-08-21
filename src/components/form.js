@@ -37,7 +37,7 @@ class TimeRelatedForm extends Component {
       const url = `/api/v1/availability/times/${month}`;
       axios.get(url).then((response) => {
           this.setState({
-              hour: response.data,
+              time: response.data,
               success: true,
           });
       }).catch((error) => {
@@ -51,18 +51,16 @@ class TimeRelatedForm extends Component {
       console.log(this);
       return current && !this.state.dates.some(obj => current.isSame(obj.date,'day'));
     }
-    disabledHours = (current) => { // this is to enable the avail. dates (do not disable)
+    disabledTime = (current) => { // this is to enable the avail. dates (do not disable)
       console.log(this);
       return current && !this.state.time.some(obj => current.isSame(obj.time,'time'));
     }
   handleSubmit = (e) => {
     e.preventDefault();
-
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
         return;
       }
-
       // Should format date value before submit.
       const values = {
         ...fieldsValue,
@@ -108,7 +106,7 @@ class TimeRelatedForm extends Component {
             <TimePicker 
             use12Hours 
             format="HH:mm:ss a" 
-            disabledHours={this.disabledHours}
+            disabledTime={this.disabledTime}
             />
           )}
         </FormItem>
