@@ -33,8 +33,8 @@ class TimeRelatedForm extends Component {
     });
   }
     fetchAvailableTimes(){
-      const month = moment().format('YYYY-MM');
-      const url = `/api/v1/availability/times/${month}`;
+      const day = moment().format('YYYY-MM-DD');
+      const url = `/api/v1/availability/times/${day}`;
       axios.get(url).then((response) => {
           this.setState({
               time: response.data,
@@ -114,7 +114,8 @@ class TimeRelatedForm extends Component {
         >
           {getFieldDecorator('time-picker', config)(
             <TimePicker 
-            use12Hours 
+            minuteStep={60} 
+            secondStep={60}
             format="HH:mm:ss a" 
             disabledTime={this.disabledTime}
             />

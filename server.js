@@ -68,8 +68,10 @@ server.post('/api/v1/appointments', (request, response, next) => {
         "appointmentTypeID": 7856489,
         "firstName": "Bob",
         "lastName": "McTest",
-        "email": "bob.mctest@example.com"
+        "email": "bob.mctest@example.com",
+        "calendarID": "2467898"
       }
+      console.log(dataToSend);
     axios({
         method: 'post',
         url: 'https://acuityscheduling.com/api/v1/appointments',
@@ -84,7 +86,7 @@ server.post('/api/v1/appointments', (request, response, next) => {
         response.json(success.data);
     })
     .catch((err) => {
-        console.log(err)
+        console.log(err);
         response.status(500).json({
             msg: 'Something wrong',
         });
