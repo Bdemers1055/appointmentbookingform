@@ -59,6 +59,35 @@ server.get('/api/v1/availability/times/:date', (request, response) => {
     });
 });
 
+server.post('/api/v1/appointments', (request, response, next) => {
+    const dataToSend = {
+        "datetime": "2018-08-23T14:00:00",
+        "appointmentTypeID": 7856489,
+        "firstName": "Bob",
+        "lastName": "McTest",
+        "email": "bob.mctest@example.com"
+      }
+    axios({
+        method: 'post',
+        url: 'https://acuityscheduling.com/api/v1/appointments',
+        auth: {
+            username: process.env.ACUITY_USER_ID,
+            password: process.env.ACUITY_API_KEY
+        },
+        data:dataToSend
+    })
+    .then((success) => {
+        console.log('success')
+        response.json(success.data);
+    })
+    .catch((err) => {
+        console.log(err)
+        response.status(500).json({
+            msg: 'Something wrong',
+        });
+    });
+}); 
+
 server.listen(port, () => {
   console.log(`Now listening on port: ${port}`);
 });
