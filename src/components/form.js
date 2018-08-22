@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Form, DatePicker, TimePicker, Button } from 'antd';
+import { Form, Input, DatePicker, TimePicker, Button } from 'antd';
 import '../App.css';
 
 const FormItem = Form.Item;
@@ -64,19 +64,22 @@ class TimeRelatedForm extends Component {
       // Should format date value before submit.
       const values = {
         ...fieldsValue,
-        'datePicker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
-        'timePicker': fieldsValue['time-picker'].format('HH:mm:ss'),
+        'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
+        'timePicker': fieldsValue['timePicker'].format('HH:mm:ss'),
+        'firstName': fieldsValue['firstName'],
+        'lastName': fieldsValue['lastName'],
+        'email': fieldsValue['email']
       };
       console.log('Received values of form: ', values);
       axios.post('/api/v1/appointments', values)
       .then((success) => {
         console.log('success')
     })
-    .catch((err) => {
+    .catch((err, response) => {
         console.log(err)
-        // response.status(500).json({
-        //     msg: 'Something wrong',
-        // });
+        response.status(500).json({
+            msg: 'Something wrong',
+        });
     });
     });
   }
@@ -102,7 +105,7 @@ class TimeRelatedForm extends Component {
           {...formItemLayout}
           label="DatePicker"
         >
-          {getFieldDecorator('date-picker', config)(
+          {getFieldDecorator('datePicker', config)(
             <DatePicker 
             disabledDate={this.disabledDate}
             />
@@ -112,13 +115,56 @@ class TimeRelatedForm extends Component {
           {...formItemLayout}
           label="TimePicker"
         >
-          {getFieldDecorator('time-picker', config)(
+          {getFieldDecorator('timePicker', config)(
             <TimePicker 
+            use12Hours
             minuteStep={60} 
             secondStep={60}
             format="HH:mm:ss a" 
             disabledTime={this.disabledTime}
             />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={(
+            <span>
+              First Name&nbsp;
+            </span>
+          )}
+        >
+          {getFieldDecorator('firstName', {
+            rules: [{ required: true, message: 'Please input your first name', whitespace: true }],
+          })(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={(
+            <span>
+              Last Name&nbsp;
+            </span>
+          )}
+        >
+          {getFieldDecorator('lastName', {
+            rules: [{ required: true, message: 'Please input your last name', whitespace: true }],
+          })(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="E-mail"
+        >
+          {getFieldDecorator('email', {
+            rules: [{
+              type: 'email', message: 'The input is not valid E-mail!',
+            }, {
+              required: true, message: 'Please input your E-mail!',
+            }],
+          })(
+            <Input />
           )}
         </FormItem>
         <FormItem

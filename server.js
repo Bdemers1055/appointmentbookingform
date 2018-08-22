@@ -62,13 +62,13 @@ server.get('/api/v1/availability/times/:date', (request, response) => {
 });
 
 server.post('/api/v1/appointments', (request, response, next) => {
-    const { datePicker, timePicker } = request.body;
+    const { datePicker, timePicker, firstName, lastName, email } = request.body;
     const dataToSend = {
         "datetime": `${datePicker}T${timePicker}`,
         "appointmentTypeID": 7856489,
-        "firstName": "Bob",
-        "lastName": "McTest",
-        "email": "bob.mctest@example.com",
+        "firstName": `${firstName}`,
+        "lastName": `${lastName}`,
+        "email": `${email}`,
         "calendarID": "2467898"
       }
       console.log(dataToSend);
