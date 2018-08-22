@@ -38,7 +38,8 @@ server.get('/api/v1/availability/:month', (request, response) => {
 });
 
 server.get('/api/v1/availability/times/:date', (request, response) => {
-    const appointmentTimes = 'times?appointmentTypeID=7856489';
+    const appointmentTypeID = process.env.ACUITY_APT_TYPE_ID;
+    const appointmentTimes = `times?appointmentTypeID=${appointmentTypeID}`;
     const date = `&date=${request.params.date}`;
     const url = `https://acuityscheduling.com/api/v1/availability/${appointmentTimes}${date}`;
     axios({
@@ -65,11 +66,11 @@ server.post('/api/v1/appointments', (request, response, next) => {
     const { datePicker, timePicker, firstName, lastName, email } = request.body;
     const dataToSend = {
         "datetime": `${datePicker}T${timePicker}`,
-        "appointmentTypeID": 7856489,
+        "appointmentTypeID": process.env.ACUITY_APT_TYPE_ID,
         "firstName": `${firstName}`,
         "lastName": `${lastName}`,
         "email": `${email}`,
-        "calendarID": "2467898"
+        "calendarID": process.env.ACUITY_CAL_ID
       }
       console.log(dataToSend);
     axios({

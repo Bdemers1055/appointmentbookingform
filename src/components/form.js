@@ -11,11 +11,11 @@ class TimeRelatedForm extends Component {
         super();
         this.state = {
           formLayout: 'vertical',
+          selectedDate: null
         };
     }
     componentDidMount(){
       this.fetchAvailableDates();
-      this.fetchAvailableTimes();
     }
     fetchAvailableDates(){
       const month = moment().format('YYYY-MM');
@@ -32,8 +32,8 @@ class TimeRelatedForm extends Component {
           });
     });
   }
-    fetchAvailableTimes(){
-      const day = moment().format('YYYY-MM-DD');
+    fetchAvailableTimes(date){
+      const day = date.format('YYYY-MM-DD');
       const url = `/api/v1/availability/times/${day}`;
       axios.get(url).then((response) => {
           this.setState({
@@ -48,12 +48,18 @@ class TimeRelatedForm extends Component {
     });
     }  
     disabledDate = (current) => { // this is to enable the avail. dates (do not disable)
-      console.log(this);
       return current && !this.state.dates.some(obj => current.isSame(obj.date,'day'));
     }
-    disabledTime = (current) => { // this is to enable the avail. dates (do not disable)
-      console.log(this);
-      return current && !this.state.time.some(obj => current.isSame(obj.time,'time'));
+    disabledHours = (current) => { // this is to enable the avail. times (do not disable)
+      console.log(current);
+      return current && !this.state.time.some(obj => current.isSame(obj.time,'hour'));
+    }
+    handleDateSelection = (date, dateString) => {
+      this.setState({
+        selectedDate : date,
+        
+      })
+      this.fetchAvailableTimes(date)
     }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -85,6 +91,7 @@ class TimeRelatedForm extends Component {
   }
 
   render() {
+    const format = 'HH:00';
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -108,6 +115,7 @@ class TimeRelatedForm extends Component {
           {getFieldDecorator('datePicker', config)(
             <DatePicker 
             disabledDate={this.disabledDate}
+            onChange={this.handleDateSelection}
             />
           )}
         </FormItem>
@@ -120,8 +128,9 @@ class TimeRelatedForm extends Component {
             use12Hours
             minuteStep={60} 
             secondStep={60}
-            format="HH:mm:ss a" 
-            disabledTime={this.disabledTime}
+            initialValue={moment('HH:00', format)} 
+            format={format}
+            disabledHours={this.disabledHours}
             />
           )}
         </FormItem>
