@@ -100,20 +100,21 @@ class TimeRelatedForm extends Component {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
+        sm: { span: 24 },
       },
     };
     const config = {
       rules: [{ type: 'object', required: true, message: 'Please select time!' }],
     };
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form className="formGroup" onSubmit={this.handleSubmit}>
         <FormItem
           {...formItemLayout}
-          label="DatePicker"
+          // label="DatePicker"
         >
           {getFieldDecorator('datePicker', config)(
             <DatePicker 
+            style={{ width: '100%' }}
             disabledDate={this.disabledDate}
             onChange={this.handleDateSelection}
             />
@@ -121,10 +122,11 @@ class TimeRelatedForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="TimePicker"
+          // label="TimePicker"
         >
           {getFieldDecorator('timePicker', config)(
             <TimePicker 
+            style={{ width: '100%' }}
             use12Hours
             minuteStep={60} 
             secondStep={60}
@@ -136,35 +138,35 @@ class TimeRelatedForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label={(
-            <span>
-              First Name&nbsp;
-            </span>
-          )}
+          // label={(
+          //   <span>
+          //     First Name&nbsp;
+          //   </span>
+          // )}
         >
           {getFieldDecorator('firstName', {
             rules: [{ required: true, message: 'Please input your first name', whitespace: true }],
           })(
-            <Input />
+            <Input placeholder="First Name"/>
           )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label={(
-            <span>
-              Last Name&nbsp;
-            </span>
-          )}
+          // label={(
+          //   <span>
+          //     Last Name&nbsp;
+          //   </span>
+          // )}
         >
           {getFieldDecorator('lastName', {
             rules: [{ required: true, message: 'Please input your last name', whitespace: true }],
           })(
-            <Input />
+            <Input placeholder="Last Name"/>
           )}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="E-mail"
+          // label="E-mail"
         >
           {getFieldDecorator('email', {
             rules: [{
@@ -173,16 +175,11 @@ class TimeRelatedForm extends Component {
               required: true, message: 'Please input your E-mail!',
             }],
           })(
-            <Input />
+            <Input placeholder="youremail@gmail.com"/>
           )}
         </FormItem>
-        <FormItem
-          wrapperCol={{
-            xs: { span: 24, offset: 0 },
-            sm: { span: 16, offset: 8 },
-          }}
-        >
-          <Button type="primary" htmlType="submit">Submit</Button>
+        <FormItem>
+          <Button className="primary" type="primary" htmlType="submit">Book Appointment</Button>
         </FormItem>
       </Form>
     );
