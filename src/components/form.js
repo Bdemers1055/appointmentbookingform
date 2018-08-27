@@ -16,6 +16,7 @@ class TimeRelatedForm extends Component {
     }
     componentDidMount(){
       this.fetchAvailableDates();
+      this.fetchNextMonthsAvailableDates();
     }
     fetchAvailableDates(){
       const month = moment().format('YYYY-MM');
@@ -32,6 +33,22 @@ class TimeRelatedForm extends Component {
           });
     });
   }
+  fetchNextMonthsAvailableDates(){
+    // const month = moment().format('YYYY-MM');
+    const month = moment().format('2018-09');
+    const url = `/api/v1/availability/${month}`;
+    axios.get(url).then((response) => {
+        this.setState({
+            dates: response.data,
+            success: true,
+        });
+    }).catch((error) => {
+        this.setState({
+            success: false,
+            error,
+        });
+  });
+}
     fetchAvailableTimes(date){
       const day = date.format('YYYY-MM-DD');
       const url = `/api/v1/availability/times/${day}`;
@@ -55,9 +72,9 @@ class TimeRelatedForm extends Component {
       return current && !this.state.time.some(obj => current.isSame(obj.time,'hour'));
     }
     handleDateSelection = (date, dateString) => {
+      this.fetchAvailableDates();
       this.setState({
-        selectedDate : date,
-        
+        selectedDate : date
       })
       this.fetchAvailableTimes(date)
     }
@@ -117,6 +134,7 @@ class TimeRelatedForm extends Component {
             style={{ width: '100%' }}
             disabledDate={this.disabledDate}
             onChange={this.handleDateSelection}
+            onPanelChange={this.fetchAvailableDates}
             />
           )}
         </FormItem>

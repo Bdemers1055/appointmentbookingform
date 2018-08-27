@@ -13,7 +13,7 @@ server.use(cors());
 server.use(express.static('build'));
 server.use(bodyParser.json());
 
-server.get('/api/v1/availability/:month', (request, response) => {
+server.get(`/api/v1/availability/:month`, (request, response) => {
     const dates = `dates?month=${request.params.month}`;
     const appointments = '&appointmentTypeID=7856489';
     const url = `https://acuityscheduling.com/api/v1/availability/${dates}${appointments}`;
