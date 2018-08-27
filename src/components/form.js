@@ -72,11 +72,15 @@ class TimeRelatedForm extends Component {
       return current && !this.state.time.some(obj => current.isSame(obj.time,'hour'));
     }
     handleDateSelection = (date, dateString) => {
-      this.fetchAvailableDates();
       this.setState({
         selectedDate : date
       })
       this.fetchAvailableTimes(date)
+    }
+    handleTimeSelection = (time, timeString) => {
+      this.setState({
+        selectedTime : '09:00:00-0200'
+      })
     }
   handleSubmit = (e) => {
     e.preventDefault();
@@ -88,7 +92,7 @@ class TimeRelatedForm extends Component {
       const values = {
         ...fieldsValue,
         'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
-        'timePicker': fieldsValue['timePicker'].format('HH:mm:ss'),
+        'timePicker': fieldsValue['timePicker'].format('HH:mm:ss-400'),
         'firstName': fieldsValue['firstName'],
         'lastName': fieldsValue['lastName'],
         'email': fieldsValue['email']
@@ -134,7 +138,6 @@ class TimeRelatedForm extends Component {
             style={{ width: '100%' }}
             disabledDate={this.disabledDate}
             onChange={this.handleDateSelection}
-            onPanelChange={this.fetchAvailableDates}
             />
           )}
         </FormItem>
@@ -145,12 +148,12 @@ class TimeRelatedForm extends Component {
           {getFieldDecorator('timePicker', config)(
             <TimePicker 
             style={{ width: '100%' }}
-            use12Hours
             minuteStep={60} 
             secondStep={60}
             initialValue={moment('HH:00', format)} 
             format={format}
             disabledHours={this.disabledHours}
+            onChange={this.handleTimeSelection}
             />
           )}
         </FormItem>
