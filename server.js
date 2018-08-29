@@ -13,59 +13,59 @@ server.use(cors());
 server.use(express.static('build'));
 server.use(bodyParser.json());
 
-server.get(`/api/v1/availability/:month`, (request, response) => {
-    const dates = `dates?month=${request.params.month}`;
-    const appointments = '&appointmentTypeID=7856489';
-    const url = `https://acuityscheduling.com/api/v1/availability/${dates}${appointments}`;
-    axios({
-        method: 'get',
-        url: url,
-        auth: {
-            username: process.env.ACUITY_USER_ID,
-            password: process.env.ACUITY_API_KEY
-        }
-    })
-    .then((appointmentDate) => {
-        console.log(appointmentDate)
-        response.json(appointmentDate.data);
-    })
-    .catch((err) => {
-        console.log(err)
-        response.status(500).json({
-            msg: 'Something wrong',
-        });
-    });
-});
+// server.get(`/api/v1/availability/:month`, (request, response) => {
+//     const dates = `dates?month=${request.params.month}`;
+//     const appointments = '&appointmentTypeID=7856489';
+//     const url = `https://acuityscheduling.com/api/v1/availability/${dates}${appointments}`;
+//     axios({
+//         method: 'get',
+//         url: url,
+//         auth: {
+//             username: process.env.ACUITY_USER_ID,
+//             password: process.env.ACUITY_API_KEY
+//         }
+//     })
+//     .then((appointmentDate) => {
+//         console.log(appointmentDate)
+//         response.json(appointmentDate.data);
+//     })
+//     .catch((err) => {
+//         console.log(err)
+//         response.status(500).json({
+//             msg: 'Something wrong',
+//         });
+//     });
+// });
 
-server.get('/api/v1/availability/times/:date', (request, response) => {
-    const appointmentTypeID = process.env.ACUITY_APT_TYPE_ID;
-    const appointmentTimes = `times?appointmentTypeID=${appointmentTypeID}`;
-    const date = `&date=${request.params.date}`;
-    const url = `https://acuityscheduling.com/api/v1/availability/${appointmentTimes}${date}`;
-    axios({
-        method: 'get',
-        url: url,
-        auth: {
-            username: process.env.ACUITY_USER_ID,
-            password: process.env.ACUITY_API_KEY
-        }
-    })
-    .then((appointmentTimes) => {
-        console.log(appointmentTimes)
-        response.json(appointmentTimes.data);
-    })
-    .catch((err) => {
-        console.log(err)
-        response.status(500).json({
-            msg: 'Something wrong',
-        });
-    });
-});
+// server.get('/api/v1/availability/times/:date', (request, response) => {
+//     const appointmentTypeID = process.env.ACUITY_APT_TYPE_ID;
+//     const appointmentTimes = `times?appointmentTypeID=${appointmentTypeID}`;
+//     const date = `&date=${request.params.date}`;
+//     const url = `https://acuityscheduling.com/api/v1/availability/${appointmentTimes}${date}`;
+//     axios({
+//         method: 'get',
+//         url: url,
+//         auth: {
+//             username: process.env.ACUITY_USER_ID,
+//             password: process.env.ACUITY_API_KEY
+//         }
+//     })
+//     .then((appointmentTimes) => {
+//         console.log(appointmentTimes)
+//         response.json(appointmentTimes.data);
+//     })
+//     .catch((err) => {
+//         console.log(err)
+//         response.status(500).json({
+//             msg: 'Something wrong',
+//         });
+//     });
+// });
 
 server.post('/api/v1/appointments', (request, response, next) => {
-    const { datePicker, timePicker, firstName, lastName, email } = request.body;
+    // const { firstName, lastName, email } = request.body;
     const dataToSend = {
-        "datetime": `${datePicker}T${timePicker}`,
+        "datetime": 2016-12-03T14:00:00-0800,
         "appointmentTypeID": process.env.ACUITY_APT_TYPE_ID,
         "firstName": `${firstName}`,
         "lastName": `${lastName}`,

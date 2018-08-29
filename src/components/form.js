@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Form, Input, DatePicker, TimePicker, Button } from 'antd';
+import { Form, Input, DatePicker, Button } from 'antd';
 import '../App.css';
 
 const FormItem = Form.Item;
@@ -11,77 +11,9 @@ class TimeRelatedForm extends Component {
         super();
         this.state = {
           formLayout: 'vertical',
-          selectedDate: null
         };
     }
-    componentDidMount(){
-      this.fetchAvailableDates();
-      this.fetchNextMonthsAvailableDates();
-    }
-    fetchAvailableDates(){
-      const month = moment().format('YYYY-MM');
-      const url = `/api/v1/availability/${month}`;
-      axios.get(url).then((response) => {
-          this.setState({
-              dates: response.data,
-              success: true,
-          });
-      }).catch((error) => {
-          this.setState({
-              success: false,
-              error,
-          });
-    });
-  }
-  fetchNextMonthsAvailableDates(){
-    // const month = moment().format('YYYY-MM');
-    const month = moment().format('2018-09');
-    const url = `/api/v1/availability/${month}`;
-    axios.get(url).then((response) => {
-        this.setState({
-            dates: response.data,
-            success: true,
-        });
-    }).catch((error) => {
-        this.setState({
-            success: false,
-            error,
-        });
-  });
-}
-    fetchAvailableTimes(date){
-      const day = date.format('YYYY-MM-DD');
-      const url = `/api/v1/availability/times/${day}`;
-      axios.get(url).then((response) => {
-          this.setState({
-              time: response.data,
-              success: true,
-          });
-      }).catch((error) => {
-          this.setState({
-              success: false,
-              error,
-          });
-    });
-    }  
-    disabledDate = (current) => { // this is to enable the avail. dates (do not disable)
-      return current && !this.state.dates.some(obj => current.isSame(obj.date,'day'));
-    }
-    disabledHours = (current) => { // this is to enable the avail. times (do not disable)
-      console.log(current);
-      return current && !this.state.time.some(obj => current.isSame(obj.time,'hour'));
-    }
-    handleDateSelection = (date, dateString) => {
-      this.setState({
-        selectedDate : date
-      })
-      this.fetchAvailableTimes(date)
-    }
-    handleTimeSelection = (time, timeString) => {
-      this.setState({
-        selectedTime : '09:00:00-0200'
-      })
-    }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, fieldsValue) => {
@@ -90,13 +22,11 @@ class TimeRelatedForm extends Component {
       }
       // Should format date value before submit.
       const values = {
-        ...fieldsValue,
-        'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
-        'timePicker': fieldsValue['timePicker'].format('HH:mm:ss-400'),
+        // ...fieldsValue,
         'firstName': fieldsValue['firstName'],
         'lastName': fieldsValue['lastName'],
         'email': fieldsValue['email']
-      };
+      }; 
       console.log('Received values of form: ', values);
       axios.post('/api/v1/appointments', values)
       .then((success) => {
@@ -112,7 +42,6 @@ class TimeRelatedForm extends Component {
   }
 
   render() {
-    const format = 'HH:00';
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -129,9 +58,8 @@ class TimeRelatedForm extends Component {
     };
     return (
       <Form className="formGroup" onSubmit={this.handleSubmit}>
-        <FormItem
+        {/* <FormItem
           {...formItemLayout}
-          // label="DatePicker"
         >
           {getFieldDecorator('datePicker', config)(
             <DatePicker 
@@ -140,30 +68,9 @@ class TimeRelatedForm extends Component {
             onChange={this.handleDateSelection}
             />
           )}
-        </FormItem>
+        </FormItem> */}
         <FormItem
           {...formItemLayout}
-          // label="TimePicker"
-        >
-          {getFieldDecorator('timePicker', config)(
-            <TimePicker 
-            style={{ width: '100%' }}
-            minuteStep={60} 
-            secondStep={60}
-            initialValue={moment('HH:00', format)} 
-            format={format}
-            disabledHours={this.disabledHours}
-            onChange={this.handleTimeSelection}
-            />
-          )}
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          // label={(
-          //   <span>
-          //     First Name&nbsp;
-          //   </span>
-          // )}
         >
           {getFieldDecorator('firstName', {
             rules: [{ required: true, message: 'Please input your first name', whitespace: true }],
@@ -173,11 +80,6 @@ class TimeRelatedForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          // label={(
-          //   <span>
-          //     Last Name&nbsp;
-          //   </span>
-          // )}
         >
           {getFieldDecorator('lastName', {
             rules: [{ required: true, message: 'Please input your last name', whitespace: true }],
@@ -187,7 +89,6 @@ class TimeRelatedForm extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          // label="E-mail"
         >
           {getFieldDecorator('email', {
             rules: [{
