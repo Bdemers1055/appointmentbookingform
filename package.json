@@ -23,7 +23,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "server:start": "nodemon server.js",
-    "heroku-postbuild": "rm -rf build && npm run build",
+    "heroku-postbuild": "rm -rf build && npm run build"
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
