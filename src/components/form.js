@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Form, Input, DatePicker, TimePicker, Button } from 'antd';
+import { Form, Input, DatePicker, Button } from 'antd';
 import '../App.css';
 
 const FormItem = Form.Item;
@@ -50,7 +50,7 @@ class TimeRelatedForm extends Component {
   });
 }
     fetchAvailableTimes(date){
-      const day = date.format('YYYY-MM-DD');
+      const day = date.format('YYYY-MM-DDT17:00:00');
       const url = `/api/v1/availability/times/${day}`;
       axios.get(url).then((response) => {
           this.setState({
@@ -79,7 +79,7 @@ class TimeRelatedForm extends Component {
     }
     handleTimeSelection = (time, timeString) => {
       this.setState({
-        selectedTime : '09:00:00-0200'
+        selectedTime : '19:00:00-0400'
       })
     }
   handleSubmit = (e) => {
@@ -91,8 +91,7 @@ class TimeRelatedForm extends Component {
       // Should format date value before submit.
       const values = {
         ...fieldsValue,
-        'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DD'),
-        'timePicker': fieldsValue['timePicker'].format('HH:mm:ss-400'),
+        'datePicker': fieldsValue['datePicker'].format('YYYY-MM-DDTHH:mm:ss'),
         'firstName': fieldsValue['firstName'],
         'lastName': fieldsValue['lastName'],
         'email': fieldsValue['email']
@@ -112,6 +111,7 @@ class TimeRelatedForm extends Component {
   }
 
   render() {
+    const defaultValue = moment('YYYY-MM-DDT17:00:00');
     const format = 'HH:00';
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -134,29 +134,17 @@ class TimeRelatedForm extends Component {
           // label="DatePicker"
         >
           {getFieldDecorator('datePicker', config)(
-            <DatePicker 
+            <DatePicker
             style={{ width: '100%' }}
-            disabledDate={this.disabledDate}
-            onChange={this.handleDateSelection}
-            />
+              showTime={{ defaultValue: moment('17:00:00', 'HH:mm:ss') }}
+              format="YYYY-MM-DDTHH:mm:ss"
+              placeholder="Select Date and Time"
+              disabledDate={this.disabledDate}
+              onChange={this.handleDateSelection}
+              />
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          // label="TimePicker"
-        >
-          {getFieldDecorator('timePicker', config)(
-            <TimePicker 
-            style={{ width: '100%' }}
-            minuteStep={60} 
-            secondStep={60}
-            initialValue={moment('HH:00', format)} 
-            format={format}
-            disabledHours={this.disabledHours}
-            onChange={this.handleTimeSelection}
-            />
-          )}
-        </FormItem>
+    
         <FormItem
           {...formItemLayout}
           // label={(

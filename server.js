@@ -63,9 +63,9 @@ server.get('/api/v1/availability/times/:date', (request, response) => {
 });
 
 server.post('/api/v1/appointments', (request, response, next) => {
-    const { datePicker, timePicker, firstName, lastName, email } = request.body;
+    const { datePicker, firstName, lastName, email } = request.body;
     const dataToSend = {
-        "datetime": `${datePicker}T${timePicker}`,
+        "datetime": `${datePicker}-0400`,
         "appointmentTypeID": process.env.ACUITY_APT_TYPE_ID,
         "firstName": `${firstName}`,
         "lastName": `${lastName}`,
