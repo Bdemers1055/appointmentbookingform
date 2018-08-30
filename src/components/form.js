@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { Form, Input, DatePicker, Button } from 'antd';
+import { Form, Input, DatePicker, Button, Alert } from 'antd';
 import '../App.css';
 
 const FormItem = Form.Item;
@@ -10,6 +10,7 @@ class TimeRelatedForm extends Component {
     constructor() {
         super();
         this.state = {
+          appearance: 'none',
           formLayout: 'vertical',
           selectedDate: null
         };
@@ -34,7 +35,6 @@ class TimeRelatedForm extends Component {
     });
   }
   fetchNextMonthsAvailableDates(){
-    // const month = moment().format('YYYY-MM');
     const month = moment().format('2018-09');
     const url = `/api/v1/availability/${month}`;
     axios.get(url).then((response) => {
@@ -100,6 +100,7 @@ class TimeRelatedForm extends Component {
       axios.post('/api/v1/appointments', values)
       .then((success) => {
         console.log('success')
+        this.displaySuccessMessage();
     })
     .catch((err, response) => {
         console.log(err)
@@ -109,8 +110,14 @@ class TimeRelatedForm extends Component {
     });
     });
   }
+  displaySuccessMessage(){
+    this.setState({
+      appearance: 'block'
+    });
+}
 
   render() {
+    const styles = { display: this.state.appearance };
     const defaultValue = moment('YYYY-MM-DDT17:00:00');
     const format = 'HH:00';
     const { getFieldDecorator } = this.props.form;
@@ -137,10 +144,11 @@ class TimeRelatedForm extends Component {
             <DatePicker
             style={{ width: '100%' }}
               showTime={{ defaultValue: moment('17:00:00', 'HH:mm:ss') }}
-              format="YYYY-MM-DDTHH:mm:ss"
               placeholder="Select Date and Time"
               disabledDate={this.disabledDate}
               onChange={this.handleDateSelection}
+              format="YYYY-MM-DDTHH:mm:ss"
+              use12Hours
               />
           )}
         </FormItem>
@@ -190,6 +198,7 @@ class TimeRelatedForm extends Component {
         <FormItem>
           <Button className="primary" type="primary" htmlType="submit">Book Appointment</Button>
         </FormItem>
+        <Alert style = { styles } message="Success, your appointment is scheduled." type="success" />
       </Form>
     );
   }
