@@ -11,6 +11,7 @@ class TimeRelatedForm extends Component {
         super();
         this.state = {
           appearance: 'none',
+          display: 'none',
           formLayout: 'vertical',
           selectedDate: null
         };
@@ -104,20 +105,28 @@ class TimeRelatedForm extends Component {
     })
     .catch((err, response) => {
         console.log(err)
-        response.status(500).json({
-            msg: 'Something wrong',
-        });
+        this.displayErrorMessage();
+        // response.status(500).json({
+        //     msg: 'Something wrong',
+        // });
     });
     });
   }
   displaySuccessMessage(){
     this.setState({
+      display: 'none',
       appearance: 'block'
     });
 }
-
+displayErrorMessage(){
+  this.setState({
+    appearance: 'none',
+    display: 'block'
+  });
+}
   render() {
-    const styles = { display: this.state.appearance };
+    const successStyles = { display: this.state.appearance };
+    const errorStyles = { display: this.state.display };
     const defaultValue = moment('YYYY-MM-DDT17:00:00');
     const format = 'HH:00';
     const { getFieldDecorator } = this.props.form;
@@ -198,7 +207,8 @@ class TimeRelatedForm extends Component {
         <FormItem>
           <Button className="primary" type="primary" htmlType="submit">Book Appointment</Button>
         </FormItem>
-        <Alert style = { styles } message="Success, your appointment is scheduled." type="success" />
+        <Alert style = { successStyles } message="Success! your appointment is scheduled for Fri. Sept. 9th at 9:00 am." type="success" />
+        <Alert style = { errorStyles } message="Unfortunately, the time you selected is not avaible. Please select another time." type="error" />
       </Form>
     );
   }
