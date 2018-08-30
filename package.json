@@ -15,7 +15,9 @@
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.4"
   },
-  "proxy": "http://localhost:3100",
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  },
   "scripts": {
     "start": "node server.js",
     "client:start": "react-scripts start",
@@ -24,9 +26,6 @@
     "eject": "react-scripts eject",
     "server:start": "nodemon server.js",
     "heroku-postbuild": "rm -rf build && npm run build"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.3"
   },
   "repository": {
     "type": "git",
