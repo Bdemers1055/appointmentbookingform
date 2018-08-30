@@ -1,7 +1,8 @@
 {
   "name": "appointmentbookingform",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "dependencies": {
     "antd": "^3.8.1",
     "axios": "^0.18.0",
@@ -22,9 +23,20 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "server:start": "nodemon server.js",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "rm -rf build && npm run build",
   },
   "devDependencies": {
     "nodemon": "^1.18.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bdemers1055.github.io/appointmentbookingform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bdemers1055/appointmentbookingform/issues"
+  },
+  "homepage": "https://github.com/Bdemers1055/appointmentbookingform#readme"
 }
